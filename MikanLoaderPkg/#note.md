@@ -1,7 +1,7 @@
-# ‘æ‚QÍ EDK ‡U“ü–å‚Æƒƒ‚ƒŠƒ}ƒbƒv
+# ç¬¬ï¼’ç«  EDK â…¡å…¥é–€ã¨ãƒ¡ãƒ¢ãƒªãƒžãƒƒãƒ—
 
-## 2.2 EDK ‡U‚Åƒnƒ[ƒ[ƒ‹ƒh (osbook_day02a)
-ƒ\[ƒXƒR[ƒh‚ð€”õ
+## 2.2 EDK â…¡ã§ãƒãƒ­ãƒ¼ãƒ¯ãƒ¼ãƒ«ãƒ‰ (osbook_day02a)
+ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã‚’æº–å‚™
 ```
 ~/workspace/osbook/MikanLoaderPkg/
   MikanLoader.dec
@@ -10,28 +10,28 @@
   Main.c
 ```
 
-## ƒrƒ‹ƒh‘ÎÛ‚Ö‚ÌƒVƒ“ƒ{ƒŠƒbƒNƒŠƒ“ƒN‚ðì¬
+## ãƒ“ãƒ«ãƒ‰å¯¾è±¡ã¸ã®ã‚·ãƒ³ãƒœãƒªãƒƒã‚¯ãƒªãƒ³ã‚¯ã‚’ä½œæˆ
 ```
 $ cd ~/edk2
 $ ln -s ~/workspace/osbook/MikanLoaderPkg ./
 ```
 
-## edk ‚ðƒZƒbƒgƒAƒbƒvAƒrƒ‹ƒh
+## edk ã‚’ã‚»ãƒƒãƒˆã‚¢ãƒƒãƒ—ã€ãƒ“ãƒ«ãƒ‰
 ```
 $ cd ~/edk2
 $ source edksetup.sh
-$ code ./Conf/target.txt  # •\2.1 ‚ðŽQÆ‚µ‚Ä‘‚«Š·‚¦‚é
+$ code ./Conf/target.txt  # è¡¨2.1 ã‚’å‚ç…§ã—ã¦æ›¸ãæ›ãˆã‚‹
 $ build
 ```
 
-## QEMU ‚ÅŽÀs
+## QEMU ã§å®Ÿè¡Œ
 ```
 $ ~/osbook/devenv/run_qemu.sh ~/edk2/Build/MikanLoaderX64/DEBUG_CLANG38/X64/Loader.efi
 ```
 
-## 2.5 ƒƒ‚ƒŠƒ}ƒbƒv‚ÌŽæ“¾ (osbook_day02b)
+## 2.5 ãƒ¡ãƒ¢ãƒªãƒžãƒƒãƒ—ã®å–å¾— (osbook_day02b)
 
-UEFI ‚©‚çƒƒ‚ƒŠƒ}ƒbƒv‚ðŽæ“¾‚µ‚ÄAƒtƒ@ƒCƒ‹‚É•Û‘¶‚·‚éƒvƒƒOƒ‰ƒ€‚ðì¬‚·‚é
+UEFI ã‹ã‚‰ãƒ¡ãƒ¢ãƒªãƒžãƒƒãƒ—ã‚’å–å¾—ã—ã¦ã€ãƒ•ã‚¡ã‚¤ãƒ«ã«ä¿å­˜ã™ã‚‹ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã‚’ä½œæˆã™ã‚‹
 
 [2] UEFI Specification Version 2.8 (Errata B) (released June 2020)
 
@@ -41,17 +41,17 @@ UEFI ‚©‚çƒƒ‚ƒŠƒ}ƒbƒv‚ðŽæ“¾‚µ‚ÄAƒtƒ@ƒCƒ‹‚É•Û‘¶‚·‚éƒvƒƒOƒ‰ƒ€‚ðì¬‚·‚é
 If the protocol is supported by the handle, it opens the protocol on behalf of the calling agent. 
 This is an extended version of the EFI boot service EFI_BOOT_SERVICES.HandleProtocol(). 
 
-> EFI_FILE_PROTOCOL.Open() : Opens a new file relative to the source filefs location.
+> EFI_FILE_PROTOCOL.Open() : Opens a new file relative to the source fileâ€™s location.
 
-Main.c ‚Ö’Ç‰Á
+Main.c ã¸è¿½åŠ 
 
-- MemoryMap : 'EFI_BOOT_SERVICES.GetMemoryMap()' ‚©‚çŽæ“¾‚·‚éî•ñ‚ðŠi”[‚·‚éƒf[ƒ^\‘¢
-- GetMemoryMap() : UEFI ‚©‚çƒƒ‚ƒŠƒ}ƒbƒv‚ðŽæ“¾
-- GetMemoryTypeUnicode() : EFI_MEMORY_TYPE Œ^‚©‚ç—v–ñ•¶‚ðŽæ“¾
-- SaveMemoryMap() : ƒƒ‚ƒŠƒ}ƒbƒv‚ðCSVƒtƒ@ƒCƒ‹‚É•ÏŠ·‚µ‚Ä•Û‘¶‚·‚é
-- OpenRootDir() : UEFI ‚©‚çƒ‹[ƒgƒfƒBƒŒƒNƒgƒŠ‚Ö‚Ìƒnƒ“ƒhƒ‹‚ðŽæ“¾
+- MemoryMap : 'EFI_BOOT_SERVICES.GetMemoryMap()' ã‹ã‚‰å–å¾—ã™ã‚‹æƒ…å ±ã‚’æ ¼ç´ã™ã‚‹ãƒ‡ãƒ¼ã‚¿æ§‹é€ 
+- GetMemoryMap() : UEFI ã‹ã‚‰ãƒ¡ãƒ¢ãƒªãƒžãƒƒãƒ—ã‚’å–å¾—
+- GetMemoryTypeUnicode() : EFI_MEMORY_TYPE åž‹ã‹ã‚‰è¦ç´„æ–‡ã‚’å–å¾—
+- SaveMemoryMap() : ãƒ¡ãƒ¢ãƒªãƒžãƒƒãƒ—ã‚’CSVãƒ•ã‚¡ã‚¤ãƒ«ã«å¤‰æ›ã—ã¦ä¿å­˜ã™ã‚‹
+- OpenRootDir() : UEFI ã‹ã‚‰ãƒ«ãƒ¼ãƒˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã¸ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—
 
-Loader.inf ‚Ö’Ç‰Á
+Loader.inf ã¸è¿½åŠ 
 
 ```
 [Protocols]
@@ -60,33 +60,33 @@ Loader.inf ‚Ö’Ç‰Á
   gEfiSimpleFileSystemProtocolGuid
 ```
 
-## 2.7 ƒƒ‚ƒŠƒ}ƒbƒv‚ÌŠm”F
+## 2.7 ãƒ¡ãƒ¢ãƒªãƒžãƒƒãƒ—ã®ç¢ºèª
 
-Main.c ‚ðƒrƒ‹ƒh
+Main.c ã‚’ãƒ“ãƒ«ãƒ‰
 ```
 $ cd ~/edk2
 $ source edksetup.sh
 $ build
 ```
 
-QEMU ‚Å Loader.efi ‚ð‹N“®
+QEMU ã§ Loader.efi ã‚’èµ·å‹•
 ```
 $ ~/osbook/devenv/run_qemu.sh  Build/MikanLoaderX64/DEBUG_CLANG38/X64/Loader.efi
 ```
 
-QEMU ‚ð‹N“®‚·‚é‚Æƒtƒ@ƒCƒ‹ƒVƒXƒeƒ€ƒCƒ[ƒW‚ª disk.img ‚Æ‚µ‚Äì¬‚³‚ê‚é‚Ì‚Å‚±‚ê‚ðƒ}ƒEƒ“ƒg‚µ‚Ä’†g‚ðŠm”F‚Å‚«‚éB
+QEMU ã‚’èµ·å‹•ã™ã‚‹ã¨ãƒ•ã‚¡ã‚¤ãƒ«ã‚·ã‚¹ãƒ†ãƒ ã‚¤ãƒ¡ãƒ¼ã‚¸ãŒ disk.img ã¨ã—ã¦ä½œæˆã•ã‚Œã‚‹ã®ã§ã“ã‚Œã‚’ãƒžã‚¦ãƒ³ãƒˆã—ã¦ä¸­èº«ã‚’ç¢ºèªã§ãã‚‹ã€‚
 ```
 $ mkdir -p mnt
 $ sudo mount -o loop disk.img mnt
 $ ls mnt
 ```
 
-ƒvƒƒOƒ‰ƒ€‚É‚æ‚Á‚Äì¬‚³‚ê‚½ƒƒ‚ƒŠƒ}ƒbƒv‚ÌCSVƒtƒ@ƒCƒ‹‚Ì’†g‚ðŠm”F
+ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã«ã‚ˆã£ã¦ä½œæˆã•ã‚ŒãŸãƒ¡ãƒ¢ãƒªãƒžãƒƒãƒ—ã®CSVãƒ•ã‚¡ã‚¤ãƒ«ã®ä¸­èº«ã‚’ç¢ºèª
 ```
 $ cat mnt/memmap
 ```
 
-ƒfƒBƒXƒNƒCƒ[ƒW‚ðƒAƒ“ƒ}ƒEƒ“ƒg
+ãƒ‡ã‚£ã‚¹ã‚¯ã‚¤ãƒ¡ãƒ¼ã‚¸ã‚’ã‚¢ãƒ³ãƒžã‚¦ãƒ³ãƒˆ
 ```
 $ sudo umount mnt
 ```

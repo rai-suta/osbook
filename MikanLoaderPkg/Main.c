@@ -8,7 +8,7 @@
 #include  <Protocol/BlockIo.h>
 
 // #@@range_begin(struct_memory_map)
-// 'EFI_BOOT_SERVICES.GetMemoryMap()' ‚©‚çŽæ“¾‚·‚éî•ñ‚ðŠi”[‚·‚é
+// 'EFI_BOOT_SERVICES.GetMemoryMap()' ã‹ã‚‰å–å¾—ã™ã‚‹æƒ…å ±ã‚’æ ¼ç´ã™ã‚‹
 struct MemoryMap {
   UINTN buffer_size;
   VOID* buffer;
@@ -20,7 +20,7 @@ struct MemoryMap {
 // #@@range_end(struct_memory_map)
 
 // #@@range_begin(get_memory_map)
-// 'EFI_BOOT_SERVICES.GetMemoryMap()' ‚Ö‚Ìƒ‰ƒbƒpŠÖ”
+// 'EFI_BOOT_SERVICES.GetMemoryMap()' ã¸ã®ãƒ©ãƒƒãƒ‘é–¢æ•°
 EFI_STATUS GetMemoryMap(struct MemoryMap* map) {
   if (map->buffer == NULL) {
     return EFI_BUFFER_TOO_SMALL;
@@ -28,11 +28,11 @@ EFI_STATUS GetMemoryMap(struct MemoryMap* map) {
 
   map->map_size = map->buffer_size;
   return gBS->GetMemoryMap(
-      &map->map_size,                       // IN:Š„‚è“–‚Ä‚½ƒoƒbƒtƒ@[ƒTƒCƒYAOUT:ƒtƒ@[ƒ€ƒEƒFƒA‚ªŠ„“–‚½ƒoƒbƒtƒ@[ƒTƒCƒY
-      (EFI_MEMORY_DESCRIPTOR*)map->buffer,  // OUT:ƒtƒ@[ƒ€ƒEƒFƒA‚É‚¨‚¯‚éŒ»Ý‚Ìƒƒ‚ƒŠƒ}ƒbƒv‚Ö‚Ìƒ|ƒCƒ“ƒ^
-      &map->map_key,                        // OUT:Œ»Ý‚Ìƒƒ‚ƒŠƒ}ƒbƒv‚ðŽ¯•Ê‚·‚é‚½‚ß‚Ì MapKey
-      &map->descriptor_size,                // OUT:EFI_MEMORY_DESCRIPTOR ‚ÌƒTƒCƒY
-      &map->descriptor_version);            // OUT:EFI_MEMORY_DESCRIPTOR ‚Ìƒo[ƒWƒ‡ƒ“
+      &map->map_size,                       // IN:å‰²ã‚Šå½“ã¦ãŸãƒãƒƒãƒ•ã‚¡ãƒ¼ã‚µã‚¤ã‚ºã€OUT:ãƒ•ã‚¡ãƒ¼ãƒ ã‚¦ã‚§ã‚¢ãŒå‰²å½“ãŸãƒãƒƒãƒ•ã‚¡ãƒ¼ã‚µã‚¤ã‚º
+      (EFI_MEMORY_DESCRIPTOR*)map->buffer,  // OUT:ãƒ•ã‚¡ãƒ¼ãƒ ã‚¦ã‚§ã‚¢ã«ãŠã‘ã‚‹ç¾åœ¨ã®ãƒ¡ãƒ¢ãƒªãƒžãƒƒãƒ—ã¸ã®ãƒã‚¤ãƒ³ã‚¿
+      &map->map_key,                        // OUT:ç¾åœ¨ã®ãƒ¡ãƒ¢ãƒªãƒžãƒƒãƒ—ã‚’è­˜åˆ¥ã™ã‚‹ãŸã‚ã® MapKey
+      &map->descriptor_size,                // OUT:EFI_MEMORY_DESCRIPTOR ã®ã‚µã‚¤ã‚º
+      &map->descriptor_version);            // OUT:EFI_MEMORY_DESCRIPTOR ã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³
 }
 // #@@range_end(get_memory_map)
 
@@ -61,12 +61,12 @@ const CHAR16* GetMemoryTypeUnicode(EFI_MEMORY_TYPE type) {
 // #@@range_end(get_memory_type)
 
 // #@@range_begin(save_memory_map)
-// ƒƒ‚ƒŠƒ}ƒbƒv‚ðCSVƒtƒ@ƒCƒ‹‚É•ÏŠ·‚µ‚Ä•Û‘¶‚·‚é
+// ãƒ¡ãƒ¢ãƒªãƒžãƒƒãƒ—ã‚’CSVãƒ•ã‚¡ã‚¤ãƒ«ã«å¤‰æ›ã—ã¦ä¿å­˜ã™ã‚‹
 EFI_STATUS SaveMemoryMap(struct MemoryMap* map, EFI_FILE_PROTOCOL* file) {
   CHAR8 buf[256];
   UINTN len;
 
-  // ƒe[ƒuƒ‹ƒwƒbƒ_‚Ì‘‚«ž‚Ý
+  // ãƒ†ãƒ¼ãƒ–ãƒ«ãƒ˜ãƒƒãƒ€ã®æ›¸ãè¾¼ã¿
   CHAR8* header =
     "Index, Type, Type(name), PhysicalStart, NumberOfPages, Attribute\n";
   len = AsciiStrLen(header);
@@ -75,9 +75,9 @@ EFI_STATUS SaveMemoryMap(struct MemoryMap* map, EFI_FILE_PROTOCOL* file) {
   Print(L"map->buffer = %08lx, map->map_size = %08lx\n",
       map->buffer, map->map_size);
 
-  // EFI_MEMORY_DESCRIPTOR ƒpƒ‰ƒ[ƒ^‚ð—ñ‹“‚µ‚½•¶Žš—ñ‚ð‘‚«ž‚Þ
-  EFI_PHYSICAL_ADDRESS iter;  // EFI_MEMORY_DESCRIPTOR‚ÌƒAƒhƒŒƒX
-  int i;                      // ƒƒ‚ƒŠƒ}ƒbƒv‚Ìs”Ô†<Index>
+  // EFI_MEMORY_DESCRIPTOR ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’åˆ—æŒ™ã—ãŸæ–‡å­—åˆ—ã‚’æ›¸ãè¾¼ã‚€
+  EFI_PHYSICAL_ADDRESS iter;  // EFI_MEMORY_DESCRIPTORã®ã‚¢ãƒ‰ãƒ¬ã‚¹
+  int i;                      // ãƒ¡ãƒ¢ãƒªãƒžãƒƒãƒ—ã®è¡Œç•ªå·<Index>
   for (iter = (EFI_PHYSICAL_ADDRESS)map->buffer, i = 0;
        iter < (EFI_PHYSICAL_ADDRESS)map->buffer + map->map_size;
        iter += map->descriptor_size, i++) {
@@ -123,26 +123,26 @@ EFI_STATUS OpenRootDir(EFI_HANDLE image_handle, EFI_FILE_PROTOCOL** root) {
 EFI_STATUS EFIAPI UefiMain(
     EFI_HANDLE image_handle,
     EFI_SYSTEM_TABLE *system_table) {
-  // ‹N“®ƒƒbƒZ[ƒW
+  // èµ·å‹•ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
   Print(L"Hello, Mikan World!\n");
   Print(L"built by raisuta.\n");
 
-  // ”z—ñ‚É‚æ‚éƒoƒbƒtƒ@‚ðŠm•Û‚µ‚ÄAƒƒ‚ƒŠƒ}ƒbƒv‚ð“Ç‚Ýo‚· - EFI_BOOT_SERVICES.GetMemoryMap()
+  // é…åˆ—ã«ã‚ˆã‚‹ãƒãƒƒãƒ•ã‚¡ã‚’ç¢ºä¿ã—ã¦ã€ãƒ¡ãƒ¢ãƒªãƒžãƒƒãƒ—ã‚’èª­ã¿å‡ºã™ - EFI_BOOT_SERVICES.GetMemoryMap()
   CHAR8 memmap_buf[4096 * 4];
   struct MemoryMap memmap = {sizeof(memmap_buf), memmap_buf, 0, 0, 0, 0};
   GetMemoryMap(&memmap);
 
-  // RootDir‚Ö‚Ìƒtƒ@ƒCƒ‹ƒnƒ“ƒhƒ‹‚ðŽæ“¾ - EFI_BOOT_SERVICES.OpenProtocol()
+  // RootDirã¸ã®ãƒ•ã‚¡ã‚¤ãƒ«ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾— - EFI_BOOT_SERVICES.OpenProtocol()
   EFI_FILE_PROTOCOL* root_dir;
   OpenRootDir(image_handle, &root_dir);
 
-  // ƒtƒ@ƒCƒ‹‚ðŠJ‚­ - EFI_FILE_PROTOCOL.Open() 
+  // ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã - EFI_FILE_PROTOCOL.Open() 
   EFI_FILE_PROTOCOL* memmap_file;
   root_dir->Open(
       root_dir, &memmap_file, L"\\memmap",
       EFI_FILE_MODE_READ | EFI_FILE_MODE_WRITE | EFI_FILE_MODE_CREATE, 0);
 
-  // ƒtƒ@ƒCƒ‹‚Öƒƒ‚ƒŠƒ}ƒbƒv‚ð•Û‘¶
+  // ãƒ•ã‚¡ã‚¤ãƒ«ã¸ãƒ¡ãƒ¢ãƒªãƒžãƒƒãƒ—ã‚’ä¿å­˜
   SaveMemoryMap(&memmap, memmap_file);
   memmap_file->Close(memmap_file);
   // #@@range_end(main)
