@@ -90,3 +90,31 @@ $ cat mnt/memmap
 ```
 $ sudo umount mnt
 ```
+
+## 3.3 初めてのカーネル (osbook_day03a)
+
+"kernel/main.cpp - KernelMain()" をカーネルとして追加
+
+main.cpp をビルド
+```
+$ cd ~/workspace/osbook/kernel
+$ clang++ -O2 -Wall -g ... -c main.cpp
+$ ld.lld --entry KernelMain ... -o kernel.elf main.o
+```
+
+"Main.c - UefiMain()" にてカーネル読み込み処理を追加
+- カーネルのファイルハンドルを開く
+- カーネルファイルの情報を取得
+- カーネル格納先のメモリ領域をアロケートする
+- ブートサービスを停止
+- カーネルのエントリポイントをコール
+
+Loader.inf へGUIDを追加
+```
+[Guids]
+  gEfiFileInfoGuid
+```
+
+「EDK II Module Information (INF) File Specification」
+ - 2.11 [Guids] Section (https://edk2-docs.gitbook.io/edk-ii-inf-specification/2_inf_overview/211_-guids-_section)
+
