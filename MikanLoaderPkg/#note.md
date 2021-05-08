@@ -115,6 +115,13 @@ Loader.inf へGUIDを追加
   gEfiFileInfoGuid
 ```
 
+ブートローダのビルドとカーネルを起動
+```
+$ cd ~/edk2
+$ build
+$ ~/osbook/devenv/run_qemu.sh  Build/MikanLoaderX64/DEBUG_CLANG38/X64/Loader.efi ~/workspace/osbook/kernel/kernel.elf
+```
+
 「EDK II Module Information (INF) File Specification」
  - 2.11 [Guids] Section (https://edk2-docs.gitbook.io/edk-ii-inf-specification/2_inf_overview/211_-guids-_section)
 
@@ -127,3 +134,25 @@ Loader.inf へGUIDを追加
 "Main.c - UefiMain()" にて画面描画処理を追加
  - GOP(Graphics Output Protocol) を取得して情報を出力
  - フレームバッファを白で塗りつぶす
+
+## 3.5 カーネルからピクセルを描く (osbook_day03c)
+
+"main.cpp - KernelMain()" にてフレームバッファに模様を書き込む
+
+カーネルのビルドのためにビルドオプション($CPPFLAGS)を作成
+カーネルのビルドを実施
+```
+$ cd ~/workspace/osbook/kernel
+$ source ~/osbook/devenv/buildenv.sh 
+$ echo $CPPFLAGS
+$ clang++ $CPPFLAGS -O2 --target=x86_64-elf -fno-exceptions -ffreestanding -c main.cpp
+$ ld.lld --entry KernelMain -z norelro --image-base 0x100000 --static -o kernel.elf main.o
+```
+
+"Main.c - UefiMain()" にてカーネル呼び出し時にGOPを渡すように変更
+
+ブートローダのビルドとカーネルを起動
+```
+$ cd ~/edk2
+＜省略＞
+```
