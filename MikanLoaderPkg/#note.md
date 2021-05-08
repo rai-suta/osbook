@@ -156,3 +156,19 @@ $ ld.lld --entry KernelMain -z norelro --image-base 0x100000 --static -o kernel.
 $ cd ~/edk2
 ＜省略＞
 ```
+
+## 3.6 エラー処理をしよう (osbook_day03d)
+
+"Main.c" 下記関数の呼び出し箇所において、"EFI_ERROR" の返り値を判定する処理を追加
+ - EFI_FILE_PROTOCOL.Open()
+ - EFI_FILE_PROTOCOL.Write()
+ - EFI_FILE_PROTOCOL.GetInfo()
+ - EFI_BOOT_SERVICES.OpenProtocol()
+ - EFI_BOOT_SERVICES.LocateHandleBuffer()
+ - EFI_BOOT_SERVICES.AllocatePages()
+ - GetMemoryMap() - EFI_BOOT_SERVICES.GetMemoryMap()
+ - OpenRootDir() - EFI_SIMPLE_FILE SYSTEM_PROTOCOL.OpenVolume()
+ - OpenGOP() - LocateHandleBuffer(), OpenProtocol()
+
+"Main.c - Halt()" を追加
+"while (1) __asm__("hlt");" にてプログラムを停止する
