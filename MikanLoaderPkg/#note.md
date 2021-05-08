@@ -118,3 +118,12 @@ Loader.inf へGUIDを追加
 「EDK II Module Information (INF) File Specification」
  - 2.11 [Guids] Section (https://edk2-docs.gitbook.io/edk-ii-inf-specification/2_inf_overview/211_-guids-_section)
 
+## 3.4 ブートローダからピクセルを描く (osbook_day03b)
+
+"Main.c - OpenGOP()" にて GOP を取得する処理を追加
+
+"Main.c - GetPixelFormatUnicode()" にて PixelFormat から文字列に変換する処理を追加
+
+"Main.c - UefiMain()" にて画面描画処理を追加
+ - GOP(Graphics Output Protocol) を取得して情報を出力
+ - フレームバッファを白で塗りつぶす
