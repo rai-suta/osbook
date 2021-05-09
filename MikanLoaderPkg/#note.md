@@ -194,3 +194,23 @@ $ make
 
 "main.cpp" にてフレームバッファに書き込む処理を追加
  - WritePixel() : １つの点を描画
+
+## 4.3 C++の機能を使って書き直す (osbook_day04c)
+
+"main.cpp - WritePixel()" はピクセルを描画するたびにピクセル形式をチェックして書き込むため実行効率が悪い。よって、描画を管理するベースクラスを作成して、ピクセル形式ごとに処理を分けた派生クラスを作成する。
+"main.cpp"
+ - class PixelWriter
+ - class RGBResv8BitPerColorPixelWriter : public PixelWriter
+ - class BGRResv8BitPerColorPixelWriter : public PixelWriter
+
+コンストラクタの実行にはnew演算子が必要だが、通常のnewはヒープメモリが必要となる。
+作成中のOSにはヒープメモリの管理が未実装であるため、配置newを新規定義して、グローバルRAM領域へインスタンスを配置する。
+"main.cpp"
+ - void* operator new(size_t size, void* buf)
+ - void operator delete(void* obj) noexcept
+ - char pixel_writer_buf[sizeof(RGBResv8BitPerColorPixelWriter)];
+ - PixelWriter* pixel_writer;
+
+ベースクラス(PixelWrite)のポインタを使って、"pixel_format"に合わせた派生クラスのインスタンスを作成する。そのインスタンスを使ってフレームバッファへ描画する。
+"main.cpp - KernelMain()"
+
