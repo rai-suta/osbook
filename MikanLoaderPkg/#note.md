@@ -172,3 +172,14 @@ $ cd ~/edk2
 
 "Main.c - Halt()" を追加
 "while (1) __asm__("hlt");" にてプログラムを停止する
+
+## 4.1 make入門 (osbook_day04a)
+
+"kernel/Makefile" を作成
+
+make コマンドで kernel.elf をビルドする
+```
+$ cd ~/workspace/osbook/kernel
+$ source ~/osbook/devenv/buildenv.sh 
+$ make
+```
