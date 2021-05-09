@@ -91,6 +91,8 @@ $ cat mnt/memmap
 $ sudo umount mnt
 ```
 
+# 第３章 画面表示の練習とブートローダ
+
 ## 3.3 初めてのカーネル (osbook_day03a)
 
 "kernel/main.cpp - KernelMain()" をカーネルとして追加
@@ -173,6 +175,8 @@ $ cd ~/edk2
 "Main.c - Halt()" を追加
 "while (1) __asm__("hlt");" にてプログラムを停止する
 
+# 第４章 ピクセル描画とmake入門
+
 ## 4.1 make入門 (osbook_day04a)
 
 "kernel/Makefile" を作成
@@ -247,4 +251,3 @@ Program Headers:
  - UefiMain()
  - CalcLoadAddressRange()
  - CopyLoadSegments()
- 
