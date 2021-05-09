@@ -214,3 +214,37 @@ $ make
 ベースクラス(PixelWrite)のポインタを使って、"pixel_format"に合わせた派生クラスのインスタンスを作成する。そのインスタンスを使ってフレームバッファへ描画する。
 "main.cpp - KernelMain()"
 
+## 4.5 ローダを改良する (osbook_day04d)
+
+カーネルを読み込む処理(Main.c - UefiMain)においてカーネル用のメモリを確保する処理にバグがあるのでこれを修正する。
+"readelf" コマンドを使って "kernel.elf" のプログラムヘッダを見てみると、３つあるLOADセグメントのうち、ファイルサイズ(FileSiz)とメモリサイズ(MemSiz)が不一致のセグメントがある。
+初期値がつかないグローバル変数はファイルにそのメモリ領域が格納されないため、現状のELFファイルサイズからカーネルのメモリ確保する処理では、実際に使用するメモリ領域に対して不足する。
+```
+$ cd ~/workspace/osbook/kernel
+$ readelf -l kernel.elf
+Elf file type is EXEC (Executable file)
+Entry point 0x101020
+There are 5 program headers, starting at offset 64
+
+Program Headers:
+  Type           Offset             VirtAddr           PhysAddr
+                 FileSiz            MemSiz              Flags  Align
+...
+  LOAD           0x0000000000000000 0x0000000000100000 0x0000000000100000
+                 0x00000000000001a8 0x00000000000001a8  R      0x1000
+  LOAD           0x0000000000001000 0x0000000000101000 0x0000000000101000
+                 0x00000000000001b9 0x00000000000001b9  R E    0x1000
+  LOAD           0x0000000000002000 0x0000000000102000 0x0000000000102000
+                 0x0000000000000000 0x0000000000000018  RW     0x1000
+...
+```
+
+"elf.hpp" にてファイルヘッダ(Elf64_Ehdr)とプログラムヘッダ(Elf64_Phdr) を追加
+ - typedef struct {} Elf64_Ehdr
+ - typedef struct {} Elf64_Phdr
+
+ "Main.c" にてELFファイルヘッダからLOADセグメント情報を読み出して、セグメントを正しく初期化する処理を追加。
+ - UefiMain()
+ - CalcLoadAddressRange()
+ - CopyLoadSegments()
+ 
