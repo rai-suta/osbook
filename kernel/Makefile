@@ -14,12 +14,13 @@ all: $(TARGET)
 clean:
 	rm -rf *.o
 
+.PHONY: buildenv
+buildenv:
+	$(eval CPPFLAGS := $(shell source ~/osbook/devenv/buildenv.sh && echo $${CPPFLAGS}) $(CPPFLAGS))
+	$(eval LDFLAGS := $(shell source ~/osbook/devenv/buildenv.sh && echo $${LDFLAGS}) $(LDFLAGS))
+
 kernel.elf: $(OBJS) Makefile buildenv
 	ld.lld $(LDFLAGS) -o kernel.elf $(OBJS)
 
 %.o: %.cpp Makefile buildenv
 	clang++ $(CPPFLAGS) $(CXXFLAGS) -c $<
-
-buildenv:
-	$(eval CPPFLAGS := $(shell source ~/osbook/devenv/buildenv.sh && echo $${CPPFLAGS}) $(CPPFLAGS))
-	$(eval LDFLAGS := $(shell source ~/osbook/devenv/buildenv.sh && echo $${LDFLAGS}) $(LDFLAGS))
