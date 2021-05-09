@@ -183,3 +183,14 @@ $ cd ~/workspace/osbook/kernel
 $ source ~/osbook/devenv/buildenv.sh 
 $ make
 ```
+
+## 4.2 ピクセルを自在に描く (osbook_day04b)
+
+"frame_buffer_config.h" へフレームバッファの構成情報を格納するデータ構造を定義
+ - enum PixelFormat
+ - struct FrameBufferConfig
+
+"Main.c - UefiMain()" にてカーネルへ渡すフレームバッファ情報を作成
+
+"main.cpp" にてフレームバッファに書き込む処理を追加
+ - WritePixel() : １つの点を描画
