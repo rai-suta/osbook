@@ -272,3 +272,24 @@ Program Headers:
  "Makefile" にソース(.cpp)が持つ依存関係をファイル(.d)に出力するためのパターンを追加
  - .%.d: %.cpp
  - depends:
+
+## 5.3 フォントを増やそう (osbook_day05c)
+
+Makefileへフォントデータを作成するためのルールを追加
+
+全ASCIIコードのフォントを埋め込んだテキスト(hankaku.txt) からバイナリファイルを作成する
+```
+hankaku.bin: hankaku.txt
+	../tools/makefont.py -o $@ $<
+```
+
+バイナリファイル(hankaku.bin) からリンク可能なオブジェクトファイルを作成する。
+```
+hankaku.o: hankaku.bin
+	objcopy -I binary -O elf64-x86-64 -B i386:x86-64 $< $@
+```
+
+"font.cpp" にて "hankaku.o" への参照を追加
+ - "_binary_hankaku_bin_start, _binary_hankaku_bin_end, _binary_hankaku_bin_size"
+ - "GetFont()" - 文字コードからフォントデータを返す
+ - "WriteAscii()" - "GetFont()" を使ってASCIIコードからフォントを描画する

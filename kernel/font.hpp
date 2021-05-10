@@ -3,5 +3,5 @@
 #include <cstdint>
 #include "graphics.hpp"
 
-// ‰æ–Ê‚ÉASCII•¶š‚ğ•`‰æ‚·‚é
+// ç”»é¢ã«ASCIIæ–‡å­—ã‚’æç”»ã™ã‚‹
 void WriteAscii(PixelWriter& writer, int x, int y, char c, const PixelColor& color);
