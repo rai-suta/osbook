@@ -261,3 +261,14 @@ Program Headers:
 
 フォントデータを描画する関数を追加
  - "main.cpp - WriteAscii()"
+
+## 5.2 分割コンパイル (osbook_day05b)
+
+カーネル(main.cpp)を機能別に分割する
+ - graphics.cpp - 画像処理に関するコード
+ - font.cpp - フォントに関するコード
+ - main.cpp - メイン関数を格納するコード
+
+ "Makefile" にソース(.cpp)が持つ依存関係をファイル(.d)に出力するためのパターンを追加
+ - .%.d: %.cpp
+ - depends:
