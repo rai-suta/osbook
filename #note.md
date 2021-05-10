@@ -251,3 +251,13 @@ Program Headers:
  - UefiMain()
  - CalcLoadAddressRange()
  - CopyLoadSegments()
+
+# 第５章 文字表示とコンソールクラス
+
+## 5.1 文字を書いてみる (osbook_day05a)
+
+8x16ピクセルのフォントデータをuint8の配列データとして定義する
+ - "main.cpp - kFontA[]"
+
+フォントデータを描画する関数を追加
+ - "main.cpp - WriteAscii()"
