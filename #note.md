@@ -307,3 +307,9 @@ hankaku.o: hankaku.bin
  "console.hpp", "console.cpp" コンソールクラスを追加、画面に表示する文字列をバッファに記録して、文字列が画面からあふれるときにスクロールさせる。
   - NewLine() - 改行
   - PutString() - 文字列の描画と画面のスクロール
+
+## 5.6 printk() (osbook_day05f)
+
+"main.cpp" に書式指定文字列を表示する機能を追加
+ - "Console* console" - グローバル領域に配置newで Console を作成
+ - "printk" - 可変長引数を受け取って、vsprintf で書式指定文字列を処理する
