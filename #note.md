@@ -293,3 +293,12 @@ hankaku.o: hankaku.bin
  - "_binary_hankaku_bin_start, _binary_hankaku_bin_end, _binary_hankaku_bin_size"
  - "GetFont()" - 文字コードからフォントデータを返す
  - "WriteAscii()" - "GetFont()" を使ってASCIIコードからフォントを描画する
+
+## 5.4 文字列描画と sprintf() (osbook_day05d)
+
+"font.cpp" にて文字列描画関数を追加
+ - WriteString()
+
+"newlib_support.c" にてsprintfに必要な関数を追加
+ - sbrk()
+ 
