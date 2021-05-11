@@ -301,4 +301,9 @@ hankaku.o: hankaku.bin
 
 "newlib_support.c" にてsprintfに必要な関数を追加
  - sbrk()
- 
+
+ ## 5.5 コンソールクラス (osbook_day05e)
+
+ "console.hpp", "console.cpp" コンソールクラスを追加、画面に表示する文字列をバッファに記録して、文字列が画面からあふれるときにスクロールさせる。
+  - NewLine() - 改行
+  - PutString() - 文字列の描画と画面のスクロール
