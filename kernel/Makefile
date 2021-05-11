@@ -9,16 +9,19 @@ LDFLAGS  += --entry KernelMain -z norelro --image-base 0x100000 --static
 SHELL = /bin/bash
 
 .PHONY: all
-all: buildenv $(TARGET)
+all: $(TARGET)
 
 .PHONY: clean
 clean:
 	rm -rf *.o
 
-.PHONY: buildenv
-buildenv:
-	$(eval CPPFLAGS := $(shell source ~/osbook/devenv/buildenv.sh && echo $${CPPFLAGS}) $(CPPFLAGS))
-	$(eval LDFLAGS := $(shell source ~/osbook/devenv/buildenv.sh && echo $${LDFLAGS}) $(LDFLAGS))
+buildenv.mk: ~/osbook/devenv/buildenv.sh Makefile
+	echo -n > $@
+	source ~/osbook/devenv/buildenv.sh \
+	&& echo CPPFLAGS += $${CPPFLAGS} >> $@ \
+	&& echo LDFLAGS += $${LDFLAGS} >> $@
+
+-include buildenv.mk
 
 kernel.elf: $(OBJS) Makefile
 	ld.lld $(LDFLAGS) -o kernel.elf $(OBJS)
@@ -26,7 +29,8 @@ kernel.elf: $(OBJS) Makefile
 %.o: %.cpp Makefile
 	clang++ $(CPPFLAGS) $(CXXFLAGS) -c $<
 
-.%.d: %.cpp 
+.DELETE_ON_ERROR: .%.d
+.%.d: %.cpp
 	clang++ $(CPPFLAGS) $(CXXFLAGS) -MM $< > $@
 	$(eval OBJ = $(<:.cpp=.o))
 	sed --in-place 's|$(notdir $(OBJ))|$(OBJ)|' $@
