@@ -281,11 +281,13 @@ EFI_STATUS EFIAPI UefiMain(
       gop->Mode->FrameBufferBase + gop->Mode->FrameBufferSize,
       gop->Mode->FrameBufferSize);
 
+#if 0
   // フレームバッファを白で塗りつぶす
   UINT8* frame_buffer = (UINT8*)gop->Mode->FrameBufferBase;
   for (UINTN i = 0; i < gop->Mode->FrameBufferSize; ++i) {
     frame_buffer[i] = 255;
   }
+#endif
 
   // カーネルのファイルファイルハンドルを開く
   EFI_FILE_PROTOCOL* kernel_file;
