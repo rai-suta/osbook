@@ -59,17 +59,36 @@ extern "C" void KernelMain(const FrameBufferConfig& frame_buffer_config) {
   // フレームバッファを白で塗り物す
   for (int x = 0; x < frame_buffer_config.horizontal_resolution; ++x) {
     for (int y = 0; y < frame_buffer_config.vertical_resolution; ++y) {
-      pixel_writer->Write(x, y, {255, 255, 255});
+      pixel_writer->Write(x, y, {10, 10, 10});
     }
   }
 
   // コンソール画面
-  console = new(console_buf) Console{*pixel_writer, {0, 0, 0}, {255, 255, 255}};
-
-  // printk のテスト
-  for (int i = 0; i < 27; ++i) {
-    printk("printk: %d\n", i);
-  }
+  console = new(console_buf) Console{*pixel_writer, {255, 128, 0}, {10, 10, 10}};
+  console->PutString("Genetic Lifeform and Disk Operationg System [Version 1.09]\n");
+  console->PutString("Copyright (c) 1982 Aperture Science, Inc.\n");
+  console->PutString("              .,-:;//;:=,\n");
+  console->PutString("          . :H@@@MM@M#H/.,+;,\n");
+  console->PutString("       ,/X+ +M@@M@MM=,-HMMM@X/,\n");
+  console->PutString("     -+@MM; $M@@MH+-,;XMMMM@MMMM@+-\n");
+  console->PutString("    ;@M@@M- XM@X;. -+XXXXXHHH@M@M#@/.\n");
+  console->PutString("  ,MM@@MH ,@=             .---=-=:=,.\n");
+  console->PutString("  =@#@@@MX.,                -HX$$%:;\n");
+  console->PutString(" =-./@M@M$                   .;@MMMM@MM:\n");
+  console->PutString(" X@/ -$MM/                    . +MM@@@M$\n");
+  console->PutString(",@M@H: :@:                    . =X#@@@@-\n");
+  console->PutString(",@@@MMX, .                    /H- ;@M@M=\n");
+  console->PutString(".H@@@@M@+,                    MM+..$.\n");
+  console->PutString(" /MMMM@MMH/.                  XM@MH; =;\n");
+  console->PutString("  /%$XHH@$=              , .H@@@@MX,\n");
+  console->PutString("   .=--------.           -H.,@@@@@MX,\n");
+  console->PutString("   .MM@@@HHHXX$$$:$MMX =M@@MM\n");
+  console->PutString("     =XMMM@MM@MM#H;,-+HMM@M+ /MMMX=\n");
+  console->PutString("       =@M@M#@$-.=$@MM@@@M; M=\n");
+  console->PutString("         ,:+$+-,/H#MMMMMMM@= =,\n");
+  console->PutString("               =++%%+/:-.\n");
+  console->PutString("\n");
+  console->PutString("GLaDOS>\n");
 
   while (1) __asm__("hlt");
 }
