@@ -56,19 +56,45 @@ extern "C" void KernelMain(const FrameBufferConfig& frame_buffer_config) {
       break;
   }
 
+#if 0
   // フレームバッファを白で塗り物す
   for (int x = 0; x < frame_buffer_config.horizontal_resolution; ++x) {
     for (int y = 0; y < frame_buffer_config.vertical_resolution; ++y) {
       pixel_writer->Write(x, y, {255, 255, 255});
     }
   }
+#else
+  for (int x = 0; x < frame_buffer_config.horizontal_resolution; ++x)
+  for (int y = 0; y < frame_buffer_config.vertical_resolution; ++y) {
+    pixel_writer->Write(x, y, {0, 0, 0});
+  }
+#endif
 
   // コンソール画面
-  console = new(console_buf) Console{*pixel_writer, {0, 0, 0}, {255, 255, 255}};
+  console = new(console_buf) Console{*pixel_writer, {255, 255, 255}, {10, 10, 10}};
+  printk("Hyper Operation System Ver1.0 for ALL LABORS\n");
+  printk("(c)1999 Shinohara Heavy Industry)\n");
+  printk("\n");
 
-  // printk のテスト
-  for (int i = 0; i < 27; ++i) {
-    printk("printk: %d\n", i);
+  printk("attach cd 01 /");
+  printk("enter author password");
+  printk("pass: E.HOBA");
+  printk("\n");
+
+  printk("Go to, let us go down, and there confound\n");
+  printk("their language, that they may not understand\n");
+  printk("one another's speech.\n");
+  printk("\n");
+
+  console->SetFgColor({255, 0, 0});
+  char line[128];
+  for (int i = 0, cur = 0; i < (80)/6; ++i)
+    cur += sprintf(line+cur, "BABEL ");
+  for (int i = 0; i < 16; ++i) {
+    if (i%2)
+      printk("%s\n", line);
+    else
+      printk(" %s\n", line);
   }
 
   while (1) __asm__("hlt");

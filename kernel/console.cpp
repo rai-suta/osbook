@@ -16,6 +16,11 @@ Console::Console(PixelWriter& writer,
       buffer_{}, cursor_row_{0}, cursor_column_{0} {
 }
 
+// コンソール画面 - 色を設定
+void Console::SetFgColor(const PixelColor& fg_color) {
+  fg_color_ = fg_color;
+}
+
 // コンソール画面 - 文字列を追加
 void Console::PutString(const char* s) {
   while (*s) {
