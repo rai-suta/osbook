@@ -334,3 +334,116 @@ USB関連ドライバを下記の通り3層に分けて実装する
  - USBバスドライバ - ホストコントローラの機能を利用して、USB規格で定められたAPIを提供する。
  - ホストコントローラドライバ - ホストコントローラ（USB）規格に対応するためのドライバ、USB3.xではxHCIと呼ばれる規格に準拠する必要がある。
 
+## 6.3 PCIデイバイスの探索 (osbook_day06b)
+
+### "asmfunc.asm", "asmfunc.h"
+IOポートを読み書きするためのアセンブラ
+ - IoOut32() - 32bit dataの出力
+ - IoIn32() - 32bit dataの入力
+
+### "error.hpp"
+ - class Error - エラーコードの定数とメッセージテキストを管理
+
+### "pci.cpp", "pci.hpp"
+ - MakeAddress(bus, device, function, reg addr) - PCIコンフィグ用アドレスを作成
+ - WriteAddress(address), WriteData(value), ReadData() - IOポートを使ってPCIコンフィグを読み書きする関数
+ - ReadVendorId(bus, device, functino) - PCIコンフィグからベンダーIDを読み出すシーケンス処理
+``` plantuml
+autoactivate on
+-> pci:ReadVendorId(bus, device, functino)
+  pci -> pci:WriteAddress(MakeAddress())
+    pci -> asmfunc:IoOut32(kConfigAddress)
+    pci <--asmfunc
+  pci <--pci
+  pci -> pci:ReadData()
+    pci -> asmfunc:IoIn32(kConfigData)
+    pci <--asmfunc:config data
+<--pci: vendor id
+```
+
+ - ScanAllBus() - PCIバスに繋がったデバイスを再帰的に探索する、見つかったデバイスを devices配列へ書き込む
+``` plantuml
+autoactivate on
+-> pci:ScanAllBus()
+  pci -> pci:ReadHeaderType(0, 0, 0)
+  note right: ホストブリッジのヘッダタイプを読み取る
+  pci <--pci:header type
+
+  alt single funcation device
+    note over pci:単機能デバイスの場合はバス0を担当するホストブリッジ
+    pci -> pci:ScanBus(0)
+    <--pci:err code
+
+  else multi function device
+    note over pci:マルチファンクションデバイスの場合はホストブリッジが複数存在する
+    loop function=1..7
+      pci -> pci:ReadVendorId(0, 0, function)
+      note right:vendor id が無効なら次のfunction
+      pci <--pci:vendor id
+      pci -> pci:ScanBus(function)
+      note right:functionに対応するバスをスキャン
+      pci <--pci:err code
+    end
+    <--pci:err code
+  end
+```
+
+ - ScanBus(bus) - 指定されたバス上のデバイスを探索する、vendor id が有効ならば、ScanDevice()を呼ぶ。
+``` plantuml
+autoactivate on
+-> pci:ScanBus(bus)
+  loop device=0..31
+    pci -> pci:ReadVendorId(bus, device, 0)
+    note right:0番ファンクションが正常に読み出せるならば、正常なvendor id
+    pci <--pci:vendor id
+    pci -> pci:ScanDevice(bus, device)
+    pci <--pci:err code
+  end
+<--pci:err code
+```
+
+ - ScanDevice(bus, device) - 指定されたデバイスのファンクションを探索する、まず0番functionを読み出して、マルチファンクションならば、残りのファンクション(1..7)を捜査する。
+``` plantuml
+autoactivate on
+-> pci:ScanDevice(bus, device)
+  pci ->pci:ScanFunction(bus, device, 0)
+  note right:最初のfunctionは必ず0番に存在する
+  alt is single function device
+    <--pci:err code
+    note right:これ以上functionは存在しない
+  else
+    loop function=1..7
+      pci -> pci:ReadVendorId(bus, device, function)
+      pci <--pci:vendor id
+      note right:vendor id が無効なら次のfunctionを読み出す
+      pci -> pci:ScanFunction(bus, device, function)
+      pci <--pci:err code
+      note right:err code が以上なら探索を打ち切る
+    end
+  end
+<--pci:err code
+```
+
+- ScanFunction() - 指定されたファンクションを調べる、
+``` plantuml
+autoactivate on
+-> pci:ScanFunction()
+  pci -> pci:ReadHeaderType(bus, device, function)
+  pci <--pci:header type
+  pci -> pci:AddDevice(bus, device, function, header type)
+  note right: 有効なPCIパラメータ組を devices に登録
+  pci <--pci
+  pci -> pci:ReadClassCode(bus, device, function)
+  pci <--pci: class code = base | sub
+  alt standard PCI-PCI bridge
+    pci -> pci:ReadBusNumbers(bus, device, function)
+    pci <--pci:bus numbers = secondary bus | ...
+    pci -> pci:ScanBus(secondary bus)
+    note right:セカンダリバスに対して再スキャン
+    pci <--pci:err code
+  end
+<--pci:err code
+``` 
+
+ - AddDevice(bus, device, function, header_type) - 発見したPCIデバイスを devices に追加する
+
