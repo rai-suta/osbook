@@ -6,7 +6,7 @@ struct PixelColor {
   uint8_t r, g, b;
 };
 
-// ƒsƒNƒZƒ‹•`‰æ‹@”\‚Ì‚½‚ß‚Ìƒx[ƒXƒNƒ‰ƒX
+// ãƒ”ã‚¯ã‚»ãƒ«æç”»æ©Ÿèƒ½ã®ãŸã‚ã®ãƒ™ãƒ¼ã‚¹ã‚¯ãƒ©ã‚¹
 class PixelWriter {
  public:
   PixelWriter(const FrameBufferConfig& config) : config_{config} {
@@ -23,16 +23,30 @@ class PixelWriter {
   const FrameBufferConfig& config_;
 };
 
-// ƒsƒNƒZƒ‹ƒf[ƒ^Œ`®"RGB 8bitColor"‚Ì”h¶ƒNƒ‰ƒX
+// ãƒ”ã‚¯ã‚»ãƒ«ãƒ‡ãƒ¼ã‚¿å½¢å¼"RGB 8bitColor"ã®æ´¾ç”Ÿã‚¯ãƒ©ã‚¹
 class RGBResv8BitPerColorPixelWriter : public PixelWriter {
  public:
   using PixelWriter::PixelWriter;
   virtual void Write(int x, int y, const PixelColor& c) override;
 };
 
-// ƒsƒNƒZƒ‹ƒf[ƒ^Œ`®"BGR 8bitColor"‚Ì”h¶ƒNƒ‰ƒX
+// ãƒ”ã‚¯ã‚»ãƒ«ãƒ‡ãƒ¼ã‚¿å½¢å¼"BGR 8bitColor"ã®æ´¾ç”Ÿã‚¯ãƒ©ã‚¹
 class BGRResv8BitPerColorPixelWriter : public PixelWriter {
  public:
   using PixelWriter::PixelWriter;
   virtual void Write(int x, int y, const PixelColor& c) override;
 };
+
+// 2æ¬¡å…ƒãƒ™ã‚¯ãƒˆãƒ«ã®ãƒ‡ãƒ¼ã‚¿æ§‹é€ 
+template <typename T>
+struct Vector2D {
+  T x, y;
+};
+
+// é•·æ–¹å½¢ã®æ ã‚’æç”»
+void DrawRectangle(PixelWriter& writer, const Vector2D<int>& pos,
+                   const Vector2D<int>& size, const PixelColor& c);
+
+// å¡—ã‚Šã¤ã¶ã—ãŸé•·æ–¹å½¢ã‚’æç”»
+void FillRectangle(PixelWriter& writer, const Vector2D<int>& pos,
+                   const Vector2D<int>& size, const PixelColor& c);

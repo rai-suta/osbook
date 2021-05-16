@@ -313,3 +313,16 @@ hankaku.o: hankaku.bin
 "main.cpp" に書式指定文字列を表示する機能を追加
  - "Console* console" - グローバル領域に配置newで Console を作成
  - "printk" - 可変長引数を受け取って、vsprintf で書式指定文字列を処理する
+
+# 第6章 マウス入力とPCI
+
+## 6.1 マウスカーソル (osbook_day06a)
+画面上にタスクバーとマウスカーソルを描画する
+
+### "graphics.cpp"
+ - DrawRectangle() - 長方形の枠を描画
+ - FillRectangle() - 塗りつぶした長方形を描画
+
+### "main.cpp"
+ - mouse_cursor_shape - マウスカーソルのビットマップデータ
+ - KernelMain - タスクバーを描画、マウスカーソルを描画
