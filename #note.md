@@ -447,3 +447,56 @@ autoactivate on
 
  - AddDevice(bus, device, function, header_type) - 発見したPCIデバイスを devices に追加する
 
+## 6.4 ポーリングでマウス入力 (osbook_day06c)
+
+### "main.cpp"
+ - MouseObserver(displacement_x, displacement_y) - usbドライバから呼ばれるマウスカーソルの描画処理
+ - SwitchEhci2Xhci(xhc_dev) - PCIコンフィグレジスタを設定して、USBポートをUSB3.0(xHCI)としてしようできるように設定する
+ - KernelMain(frame_buffer_config) - 下記処理を追加する
+   - マウスカーソルを初期化
+   - PCIから xHCインタフェースデバイスを取得
+   - xHCインタフェースへのMMIOアドレスを取得
+   - xHCの初期化と起動
+   - xHCの接続されたポートを初期化
+   - xHCに溜まったイベントを処理する
+
+### "error.hpp"
+ - class Error - エラーコードとエラーメッセージの定義
+ - struct WithError - 返り値とエラーコードをセットで返すためのデータ構造
+
+### "graphics.hpp"
+ - Vector2d::operator +=(rhs) - ベクトルの足し算
+
+### "libcxx_support.cpp", "newlib|support.c"
+ ライブラリnew演算子のインポートに必要な関数を定義
+
+### "logger.hpp", "logger.cpp"
+ ログレベルを指定できるカーネルロガー
+ - enum LogLevel - ログレベル定義
+ - SetLogLevel(level) - ログ優先度のしきい値を設定、設定した優先度以上のログのみが記録される
+ - Log(level, format) - ログの出力
+
+### "mouse.hpp", "mouse.cpp"
+ マウスカーソルの制御
+ - class MouseCursor - マウスカーソル
+ - MouseCursor::MoveRelative(displacement) - カーソルの描画位置を相対位置で変更する
+ - DrawMouseCursor - カーソルの全景を描画
+ - EraseMouseCursor - カーソルの背景を描画
+
+### "pci.hpp", "pci.cpp"
+ - struct ClassCode - PCIデバイスのクラスコード
+ - struct Device - PCIデバイスの基礎データ
+ - エラーコード返却を "MAKE_ERROR"  に変更
+ - AddDevice(device) - 引数をDeviceクラスに変更
+ - ReadClassCode(bus, device, function) - 読みだしたレジスタ値を ClassCode型に格納して返却
+ - ReadConfReg(dev, reg_addr) - PCIコンフィグの reg_addr 位置から読み出す
+ - WriteConfReg(dev, reg_addr, value) - PCIコンフィグの reg_addr 位置へ書き込む
+ - ReadBar(device, bar_index) - PCIコンフィグの "Base Address Register" を読み出す
+ - CalcBarAddress(bar_index) - PCIコンフィグの BARレジスタアドレスをインデックスから計算する
+
+### "register.hpp"
+ メモリマップ度レジスタを読み書きする機能
+
+### "usb/*"
+ USBドライバモジュール群
+
